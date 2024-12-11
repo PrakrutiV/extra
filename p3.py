@@ -28,11 +28,19 @@ encoder = Model(input_layer, encoded)
 autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 autoencoder.fit(x_train, x_train, epochs=10, batch_size=256)
 
+# Get encoded images
+encoded_imgs = encoder.predict(x_test)
+# Visualize encoded images
+for i in range(n):
+    plt.subplot(2, n, i + 1)
+    plt.imshow(encoded_imgs[i].reshape((16, 8)), cmap="gray")  # Reshape based on encoding_dim
+    plt.axis('off')
+    plt.title("Encoded")
+plt.show()
+
 # Reconstruct images
 decoded_imgs = autoencoder.predict(x_test)
-
 n = 10
-plt.figure(figsize=(20, 4))
 for i in range(n):
     for j, img in enumerate([x_test, decoded_imgs]):
         plt.subplot(2, n, i + 1 + j * n)
